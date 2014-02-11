@@ -5,7 +5,6 @@
 async = require 'async'
 pkgcloud = require 'pkgcloud'
 fs = require 'fs'
-jade = require 'jade'
 pathutil = require 'path'
 {BufferStream, extend} = require('./util')
 {EventEmitter} = require 'events'
@@ -46,7 +45,7 @@ class exports.Rack extends EventEmitter
 
         # Create a flattened array of assets
         @assets = []
-    
+
         # Do this in series for dependency conflicts
         async.forEachSeries assets, (asset, next) =>
 
@@ -59,16 +58,16 @@ class exports.Rack extends EventEmitter
 
                 # This is necessary because of asset recompilation
                 return if @completed
-        
+
                 # If the asset has contents, it's a single asset
                 if asset.contents?
                     @assets.push asset
-                
+
                 # If it has assets, then it's multi-asset
                 if asset.assets?
                     @assets = @assets.concat asset.assets
                 next()
-    
+
             # This tells our asset to start
             asset.emit 'start'
 
@@ -76,17 +75,15 @@ class exports.Rack extends EventEmitter
         , (error) =>
             return @emit 'error', error if error?
             @emit 'complete'
-        
+
     # Makes the rack function as express middleware
     handle: (request, response, next) ->
         response.locals assets: this
-        if request.url.slice(0,11) is '/asset-rack'
-            return @handleAdmin request, response, next
         if @hasError
             for asset in @assets
                 check = asset.checkUrl request.path
                 return asset.respond request, response if check
-            return response.redirect '/asset-rack/error'
+            return handleError(request, reqponse, next)
         handle = =>
             for asset in @assets
                 check = asset.checkUrl request.path
@@ -99,31 +96,7 @@ class exports.Rack extends EventEmitter
     handleError: (request, response, next) ->
         # No admin in production for now
         return next() if process.env.NODE_ENV is 'production'
-        errorPath = pathutil.join __dirname, 'admin/templates/error.jade'
-        fs.readFile errorPath, 'utf8', (error, contents) =>
-            return next error if error?
-            compiled = jade.compile contents,
-                filename: errorPath
-            response.send compiled
-                stack: @currentError.stack.split '\n'
-
-    handleAdmin: (request, response, next) ->
-        # No admin in production for now
-        return next() if process.env.NODE_ENV is 'production'
-        split = request.url.split('/')
-        if split.length > 2
-            path = request.url.replace '/asset-rack/', ''
-            if path is 'error'
-                return @handleError request, response, next
-            response.sendfile pathutil.join __dirname, 'admin', path
-        else
-            adminPath = pathutil.join __dirname, 'admin/templates/admin.jade'
-            fs.readFile adminPath, 'utf8', (error, contents) =>
-                return next error if error?
-                compiled = jade.compile contents,
-                    filename: adminPath
-                response.send compiled
-                    assets: @assets
+        console.log @currentError.stack.split '\n'
 
     # Writes a config file of urls to hashed urls for CDN use
     writeConfigFile: (filename) ->
@@ -185,7 +158,7 @@ class exports.Rack extends EventEmitter
         for asset in @assets
             return asset.specificUrl if url is asset.url
 
-    # Extend the class for javascript 
+    # Extend the class for javascript
     @extend: extend
 
 # The ConfigRack uses a json file and a hostname to map assets to a url
@@ -195,11 +168,11 @@ class ConfigRack
         # Check for required options
         throw new Error('options.configFile is required') unless options.configFile?
         throw new Error('options.hostname is required') unless options.hostname?
-    
+
         # Setup our options
         @assetMap = require options.configFile
         @hostname = options.hostname
-        
+
     # For hooking up as express middleware
     handle: (request, response, next) ->
         response.locals assets: this
@@ -209,7 +182,7 @@ class ConfigRack
                 # Redirect to the CDN, the config does not have the files
                 return response.redirect "//#{@hostname}#{specificUrl}"
         next()
-    
+
     # Simple function to get the tag for a url
     tag: (url) ->
         switch pathutil.extname(url)
@@ -222,8 +195,8 @@ class ConfigRack
     # Get the hashed url for a given url
     url: (url) ->
         return "//#{@hostname}#{@assetMap[url]}"
-        
-        
+
+
 # Shortcut function
 exports.fromConfigFile = (options) ->
     return new ConfigRack(options)
