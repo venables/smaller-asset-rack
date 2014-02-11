@@ -1,20 +1,24 @@
 
 should = require('chai').should()
 rack = require '../.'
-express = require 'express.io'
+express = require 'express'
 easyrequest = require 'request'
 fs = require 'fs'
 
 describe 'a less asset', ->
     app = null
+    server = null
+
+    beforeEach ->
+        app = express()
 
     it 'should work', (done) ->
         compiled = fs.readFileSync "#{__dirname}/fixtures/less/simple.css", 'utf8'
-        app = express().http()
+
         app.use new rack.LessAsset
             filename: "#{__dirname}/fixtures/less/simple.less"
             url: '/style.css'
-        app.listen 7076, ->
+        server = app.listen 7076, ->
             easyrequest 'http://localhost:7076/style.css', (error, response, body) ->
                 response.headers['content-type'].should.equal 'text/css'
                 body.should.equal compiled
@@ -22,32 +26,31 @@ describe 'a less asset', ->
 
     it 'should work compressed', (done) ->
         compiled = fs.readFileSync "#{__dirname}/fixtures/less/simple.min.css", 'utf8'
-        app = express().http()
+
         app.use new rack.LessAsset
             filename: "#{__dirname}/fixtures/less/simple.less"
             url: '/style.css'
             compress: true
-        app.listen 7076, ->
+        server = app.listen 7076, ->
+            easyrequest 'http://localhost:7076/style.css', (error, response, body) ->
+                response.headers['content-type'].should.equal 'text/css'
+                body.should.equal compiled.replace(/\n*$/, '')
+                done()
+
+    it 'should work with paths', (done) ->
+        compiled = fs.readFileSync "#{__dirname}/fixtures/less/another.css", 'utf8'
+
+        app.use new rack.LessAsset
+            filename: "#{__dirname}/fixtures/less/another.less"
+            url: '/style.css'
+            paths: ["#{__dirname}/fixtures/less/more"]
+        server = app.listen 7076, ->
             easyrequest 'http://localhost:7076/style.css', (error, response, body) ->
                 response.headers['content-type'].should.equal 'text/css'
                 body.should.equal compiled
                 done()
 
-    it 'should work with paths', (done) ->
-        compiled = fs.readFileSync "#{__dirname}/fixtures/less/another.css", 'utf8'
-        app = express().http()
-        app.use new rack.LessAsset
-            filename: "#{__dirname}/fixtures/less/another.less"
-            url: '/style.css'
-            paths: ["#{__dirname}/fixtures/less/more"]
-        app.listen 7076, ->
-            easyrequest 'http://localhost:7076/style.css', (error, response, body) ->
-                response.headers['content-type'].should.equal 'text/css'
-                body.should.equal compiled
-                done()
-        
     it 'should work with the rack', (done) ->
-        app = express().http()
         app.use assets = new rack.AssetRack [
             new rack.Asset
                 url: '/background.png'
@@ -59,10 +62,10 @@ describe 'a less asset', ->
                 filename: "#{__dirname}/fixtures/less/dependency.less"
                 url: '/style.css'
         ]
-        app.listen 7076, ->
+        server = app.listen 7076, ->
             easyrequest 'http://localhost:7076/style.css', (error, response, body) ->
                 backgroundUrl = assets.url('/background.png')
-                body.indexOf(backgroundUrl).should.not.equal -1 
+                body.indexOf(backgroundUrl).should.not.equal -1
                 done()
 
     it.skip 'should throw a meaningful error', (done) ->
@@ -86,11 +89,11 @@ describe 'a less asset', ->
                     """
                     url: 'style.css'
             ]
-        
+
         # just start a server so that `afterEach` can close it without issues
-        app = express().http()
-        app.listen 7076, ->
+
+        server = app.listen 7076, ->
             done()
 
     afterEach (done) -> process.nextTick ->
-        app.server.close done
+        server.close done

@@ -18,12 +18,13 @@ class exports.BrowserifyAsset extends Asset
         agent = browserify watch: false, debug: @debug
         for handler in @extensionHandlers
             agent.register(handler.ext, handler.handler)
-        agent.addEntry @filename
+        agent.add @filename
         agent.require @require if @require
-        if @compress is true
-            uncompressed = agent.bundle()
-            @contents = uglify.minify(uncompressed, {fromString: true}).code
-            @emit 'created'
-        else
-            @emit 'created', contents: agent.bundle()
 
+        agent.bundle (err, js) =>
+          if @compress
+            contents = uglify.minify(js, { fromString: true }).code
+          else
+            contents = js
+
+          @emit 'created', contents: contents
