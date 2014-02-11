@@ -8,6 +8,7 @@
     "async": "~0.2.10",
     "browserify": "~3.28.1",
     "coffee-script": "~1.7.1",
+    "debowerify": "~0.5.2",
     "less": "~1.6.3",
     "mime": "~1.2.11",
     "pkgcloud": "~0.9.0",
