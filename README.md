@@ -1,3 +1,16 @@
+# smaller-asset-rack
+
+This is a fork of [asset-rack](https://github.com/techpines/asset-rack) which includes only the following Asset types:
+
+* StaticAsset
+* DynamicAsset
+* BrowserifyAsset
+* LessAsset
+* AngularTemplates
+
+----------------------
+
+
 <img src="https://s3.amazonaws.com/temp.techpines.com/asset-rack-white.png">
 
 # The Static Web is here
@@ -114,14 +127,11 @@ We have some professional grade assets included.
 
 #### For Javascript
 * [Browserify](https://github.com/techpines/asset-rack/tree/master/lib#browserifyasset-jscoffeescript) - Create browserify assets that allow you to use "node-style" requires on the client-side.
-* [Snockets](https://github.com/techpines/asset-rack/tree/master/lib#snocketsasset-jscoffeescript) - Create snockets assets, to get the node-flavor of the "sprockets" from rails.
 
 #### For Stylesheets
 * [Less](http://github.com/techpines/asset-rack/tree/master/lib#lessasset) - Compile less assets, ability to use dependencies, minification.
-* [Stylus](https://github.com/techpines/asset-rack/tree/master/lib#stylusasset) - Compile stylu assets, ability to use dependencies, minification.
 
 #### Templates
-* [Jade](https://github.com/techpines/asset-rack/tree/master/lib#jadeasset) - High, performance jade templates precompiled for the browser.
 * [AngularTemplates](https://github.com/techpines/asset-rack/tree/master/lib#angulartemplatesasset) - AngularJS templates for you AngularJS folks.
 
 #### Other

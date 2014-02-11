@@ -183,26 +183,6 @@ as the `filename` argument should pull in any requires you need.
 * `compress` (defaults to false): whether to run the javascript through a minifier.
 * `extensionHandlers` (defaults to []): an array of custom extensions and associated handler function. eg: `[{ ext: 'handlebars', handler: handlebarsCompilerFunction }]`
 
-### SnocketsAsset (js/coffeescript)
-
-Snockets is a JavaScript/CoffeeScript concatenation tool for Node.js inspired by Sprockets. Used by connect-assets to create a Rails 3.1-style asset pipeline.  For more details, check it out,
-[here](https://github.com/TrevorBurnham/snockets).
-
-```javascript
-new SnocketsAsset({
-    url: '/app.js',
-    filename: __dirname + '/client/app.js',
-    compress: true
-});
-```
-
-#### Options
-
-* `url`: The url that should retrieve this resource.
-* `filename`: A filename or list of filenames to be executed by the browser.
-* `compress` (defaults to false): whether to run the javascript through a minifier.
-* `extensionHandlers` (defaults to []): an array of custom extensions and associated handler function. eg: `[{ ext: 'handlebars', handler: handlebarsCompilerFunction }]`
-* `debug` (defaults to false): output scripts via eval with trailing //@ sourceURL
 
 
 ## Stylesheets
@@ -226,85 +206,10 @@ new LessAsset({
 * `compress` (defaults to false): Whether to minify the css.
 * `paths`: List of paths to search for `@import` directives.
 
-### StylusAsset
-
-The stylus asset serves up your stylus assets.
-
-```javascript
-new StylusAsset({
-    url: '/style.css',
-    filename: __dirname + '/style/fun.styl'
-});
-```
-
-#### Options
-
-* `url`: The url that should retrieve this resource.
-* `filename`: Filename of the stylus file you want to serve.
-* `compress` (defaults to false, or true in production mode): Whether to minify the css.
-* `config`: A function that allows custom configuration of the stylus object:
-```coffee
-new StylusAsset
-  url: '/style.css'
-  filename: __dirname + '/style/fun.styl'
-  config: ->
-    @use bootstrap()
-    @define 'setting', 90
-```
-
-And javascript: 
-```js
-new StylusAsset({
-  url: '/style.css',
-  filename: __dirname + '/style/fun.styl',
-  config: function (stylus) {
-    stylus // using "this" here seems a little unnatural
-      .use(bootstrap())
-      .define('setting', 90);
-  }
-});
-```
 
 
 ## Templates
 
-### JadeAsset
-This is an awesome asset.  Ever wanted the simplicity of jade templates
-on the browser with lightning fast performance.  Here you go.
-
-```javascript
-new JadeAsset({
-    url: '/templates.js',
-    dirname: './templates'
-});
-```
-
-So if your template directory looked like this:
-
-```
-index.jade
-contact.jade
-user/
-    profile.jade
-    info.jade
-```
-
-Then reference your templates on the client like this:
-
-```javascript
-$('body').append(Templates['index']());
-$('body').append(Templates['user/profile']({username: 'brad', status: 'fun'}));
-$('body').append(Templates['user/info']());
-```
-#### Options
-
-* `url`: The url that should retrieve this resource.
-* `dirname`: Directory where template files are located, will grab them recursively.
-* `separator` (defaults to '/'): The character that separates directories.
-* `compress` (defaults to false): Whether to minify the javascript or not.
-* `clientVariable` (defaults to 'Templates'): Client side template
-variable.
-* `beforeCompile`: A function that takes the jade template as a string and returns a new jade template string before it's compiled into javascript.
 
 ### AngularTemplatesAsset
 
