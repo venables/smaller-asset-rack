@@ -83,7 +83,7 @@ class exports.Rack extends EventEmitter
             for asset in @assets
                 check = asset.checkUrl request.path
                 return asset.respond request, response if check
-            return handleError(request, reqponse, next)
+            return handleError(request, response, next)
         handle = =>
             for asset in @assets
                 check = asset.checkUrl request.path
