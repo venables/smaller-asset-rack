@@ -83,7 +83,7 @@ class exports.Rack extends EventEmitter
             for asset in @assets
                 check = asset.checkUrl request.path
                 return asset.respond request, response if check
-            return handleError(request, response, next)
+            return this.handleError(request, response, next)
         handle = =>
             for asset in @assets
                 check = asset.checkUrl request.path
@@ -96,7 +96,9 @@ class exports.Rack extends EventEmitter
     handleError: (request, response, next) ->
         # No admin in production for now
         return next() if process.env.NODE_ENV is 'production'
-        console.log @currentError.stack.split '\n'
+        if @currentError && @currentError.stack
+            console.log @currentError.stack.split '\n'
+        else console.dir @currentError
 
     # Writes a config file of urls to hashed urls for CDN use
     writeConfigFile: (filename) ->
