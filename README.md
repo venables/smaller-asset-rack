@@ -9,15 +9,12 @@ This is a fork of [asset-rack](https://github.com/techpines/asset-rack) which in
 
 ----------------------
 
-
-<img src="https://s3.amazonaws.com/temp.techpines.com/asset-rack-white.png">
-
 # The Static Web is here
 
 The Static Web is __blisteringly fast__.  The Static Web is  __ultra efficient__.  The Static Web is __cutting edge__.  And now it has a hero.
 
 ```coffeescript
-rack = require 'asset-rack'
+rack = require 'smaller-asset-rack'
 ```
 
 The Static Web is an incredibly modern, high-performance platform for delivering apps and services.  But before you dive-in, you need to start with the basics.  You need to understand the fundamental building block of the static web, the __asset__.
@@ -125,14 +122,14 @@ Which gives the hashed url.
 We have some professional grade assets included.
 
 #### For Javascript
-* [Browserify](https://github.com/techpines/asset-rack/tree/master/lib#browserifyasset-jscoffeescript) - Create browserify assets that allow you to use "node-style" requires on the client-side.
+* [Browserify](https://github.com/venables/smaller-asset-rack/tree/master/lib#browserifyasset-jscoffeescript) - Create browserify assets that allow you to use "node-style" requires on the client-side.
 
 #### For Stylesheets
-* [Less](http://github.com/techpines/asset-rack/tree/master/lib#lessasset) - Compile less assets, ability to use dependencies, minification.
+* [Less](http://github.com/venables/smaller-asset-rack/tree/master/lib#lessasset) - Compile less assets, ability to use dependencies, minification.
 
 #### Other
-* [StaticAssets](https://github.com/techpines/asset-rack/tree/master/lib#staticassets) - Images(png, jpg, gif), fonts, whatever you got.
-* [DynamicAssets](https://github.com/techpines/asset-rack/tree/master/lib#dynamicassets) - For compiling file-based assets like Less or Stylus in an entire directory.
+* [StaticAssets](https://github.com/venables/smaller-asset-rack/tree/master/lib#staticassets) - Images(png, jpg, gif), fonts, whatever you got.
+* [DynamicAssets](https://github.com/venables/smaller-asset-rack/tree/master/lib#dynamicassets) - For compiling file-based assets like Less or Stylus in an entire directory.
 
 ## Roll your own
 
@@ -322,7 +319,7 @@ new StylusAsset({
 Testing is easy and fun!
 
 ```js
-cd asset-rack
+cd smaller-asset-rack
 npm install
 npm test
 ```
