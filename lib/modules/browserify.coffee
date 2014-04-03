@@ -17,7 +17,11 @@ class exports.BrowserifyAsset extends Asset
         @debowerify = options.debowerify
         @debowerify ?= false
         @extensionHandlers = options.extensionHandlers or []
-        agent = browserify watch: false, debug: @debug
+
+        agent = browserify
+            watch: false,
+            debug: @debug
+
         for handler in @extensionHandlers
             agent.register(handler.ext, handler.handler)
         agent.add @filename
@@ -25,9 +29,11 @@ class exports.BrowserifyAsset extends Asset
         agent.transform(require('debowerify')) if @debowerify
 
         agent.bundle (err, js) =>
-          if @compress
-            contents = uglify.minify(js, { fromString: true }).code
-          else
-            contents = js
+            return @emit 'error', err if err?
 
-          @emit 'created', contents: contents
+            if @compress
+                contents = uglify.minify(js, { fromString: true }).code
+            else
+                contents = js
+
+            @emit 'created', contents: contents
