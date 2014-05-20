@@ -18,6 +18,7 @@ class exports.DynamicAssets extends Asset
         @options ?= {}
         @options.hash = @hash
         @options.maxAge = @maxAge
+        @options.cdnHost = options.cdnHost
 
         @assets = []
         walk @dirname,

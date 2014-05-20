@@ -158,7 +158,7 @@ class exports.Rack extends EventEmitter
     # Gets the hashed url for a given url
     url: (url) ->
         for asset in @assets
-            return asset.specificUrl if url is asset.url
+            return asset.publicUrl() if url is asset.url
 
     # Extend the class for javascript
     @extend: extend

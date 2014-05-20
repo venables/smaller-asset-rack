@@ -62,6 +62,9 @@ class exports.Asset extends EventEmitter
         # Whether to allow caching of non-hashed urls
         @allowNoHashCache = options.allowNoHashCache if options.allowNoHashCache?
 
+        # Use a CDN host for URLs, but still host the asset here as the origin
+        @cdnHost = options.cdnHost if options.cdnHost?
+
         # Fire callback if someone listens for a "complete" event
         # and it has already been called
         @on 'newListener', (event, listener) =>
@@ -198,9 +201,16 @@ class exports.Asset extends EventEmitter
         switch @mimetype
             when 'text/javascript'
                 tag = "\n<script type=\"#{@mimetype}\" "
-                return tag += "src=\"#{@specificUrl}\"></script>"
+                return tag += "src=\"#{@publicUrl()}\"></script>"
             when 'text/css'
-                return "\n<link rel=\"stylesheet\" href=\"#{@specificUrl}\">"
+                return "\n<link rel=\"stylesheet\" href=\"#{@publicUrl()}\">"
+
+    publicUrl: ->
+      if @cndHost
+        return "//#{@cdnHost}#{@specificUrl}"
+      else
+        return @specificUrl
+
 
     # Creates and md5 hash of the url for caching
     createSpecificUrl: ->
@@ -215,7 +225,7 @@ class exports.Asset extends EventEmitter
         @specificUrl = "#{@url.slice(0, @url.length - @ext.length)}-#{@md5}#{@ext}"
 
         # Might need a hostname if not on same server
-        if @hostname?
+        if @hostname? and !@cdnHost?
             @specificUrl = "//#{@hostname}#{@specificUrl}"
 
 
