@@ -5,5 +5,4 @@ node_modules
 *.swo
 *.swn
 *.swp
-compiled
 .sass-cache
