@@ -238,6 +238,7 @@ myApp.run(['$templateCache', angularTemplates]);
 * `url`: The url that should retrieve this resource.
 * `dirname`: Directory where the .html templates are stored.
 * `compress` (defaults to false): Whether to unglify the js.
+* `viewPrefix` (defaults to '/'): Prefix for the bview file route
 
 ## Other
 
