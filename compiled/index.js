@@ -18,6 +18,8 @@
 
   exports.StaticAssets = require('./modules/static').StaticAssets;
 
+  exports.AngularTemplatesAsset = require('./modules/angular-templates').AngularTemplatesAsset;
+
   util = require('./util');
 
   exports.util = {

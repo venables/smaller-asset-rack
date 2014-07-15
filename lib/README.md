@@ -206,6 +206,39 @@ new LessAsset({
 * `compress` (defaults to false): Whether to minify the css.
 * `paths`: List of paths to search for `@import` directives.
 
+
+
+## Templates
+
+
+### AngularTemplatesAsset
+
+The angular templates asset packages all .html templates ready to be injected into the client side angularjs template cache.
+You can read more about angularjs [here](http://angularjs.org/).
+
+```javascript
+new AngularTemplatesAsset({
+    url: '/js/templates.js',
+    dirname: __dirname + '/templates'
+});
+```
+
+Then see the following example client js code which loads templates into the template cache, where `angularTemplates` is the function provided by AngularTemplatesAsset:
+
+```javascript
+//replace this with your module initialization logic
+var myApp = angular.module("myApp", []);
+
+//use this line to add the templates to the cache
+myApp.run(['$templateCache', angularTemplates]);
+```
+
+#### Options
+
+* `url`: The url that should retrieve this resource.
+* `dirname`: Directory where the .html templates are stored.
+* `compress` (defaults to false): Whether to unglify the js.
+
 ## Other
 
 ### StaticAssets

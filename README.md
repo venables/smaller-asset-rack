@@ -6,6 +6,7 @@ This is a fork of [asset-rack](https://github.com/techpines/asset-rack) which in
 * DynamicAsset
 * BrowserifyAsset
 * LessAsset
+* AngularTemplates
 
 ----------------------
 
@@ -126,6 +127,9 @@ We have some professional grade assets included.
 
 #### For Stylesheets
 * [Less](http://github.com/venables/smaller-asset-rack/tree/master/lib#lessasset) - Compile less assets, ability to use dependencies, minification.
+
+#### Templates
+* [AngularTemplates](https://github.com/techpines/asset-rack/tree/master/lib#angulartemplatesasset) - AngularJS templates for you AngularJS folks.
 
 #### Other
 * [StaticAssets](https://github.com/venables/smaller-asset-rack/tree/master/lib#staticassets) - Images(png, jpg, gif), fonts, whatever you got.

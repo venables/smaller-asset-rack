@@ -9,6 +9,7 @@ exports.DynamicAssets = require('./modules/dynamic').DynamicAssets
 exports.LessAsset = require('./modules/less').LessAsset
 exports.BrowserifyAsset = require('./modules/browserify').BrowserifyAsset
 exports.StaticAssets = require('./modules/static').StaticAssets
+exports.AngularTemplatesAsset = require('./modules/angular-templates').AngularTemplatesAsset
 
 util = require './util'
 exports.util =
