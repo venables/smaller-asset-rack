@@ -14,8 +14,6 @@ class exports.BrowserifyAsset extends Asset
         @debug = options.debug or false
         @compress = options.compress
         @compress ?= false
-        @debowerify = options.debowerify
-        @debowerify ?= false
         @extensionHandlers = options.extensionHandlers or []
 
         agent = browserify
@@ -26,7 +24,6 @@ class exports.BrowserifyAsset extends Asset
             agent.register(handler.ext, handler.handler)
         agent.add @filename
         agent.require @require if @require
-        agent.transform(require('debowerify')) if @debowerify
 
         agent.bundle (err, js) =>
             return @emit 'error', err if err?
