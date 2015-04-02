@@ -76,9 +76,12 @@ class exports.Rack extends EventEmitter
             return @emit 'error', error if error?
             @emit 'complete'
 
+    handler: =>
+        return @handle.bind(this)
+
     # Makes the rack function as express middleware
     handle: (request, response, next) ->
-        response.locals assets: this
+        response.locals.assets = this
         if @hasError
             for asset in @assets
                 check = asset.checkUrl request.path
@@ -177,7 +180,7 @@ class ConfigRack
 
     # For hooking up as express middleware
     handle: (request, response, next) ->
-        response.locals assets: this
+        response.locals.assets = this
         for url, specificUrl of @assetMap
             if request.path is url or request.path is specificUrl
 
