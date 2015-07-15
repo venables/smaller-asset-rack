@@ -21,7 +21,7 @@ describe 'a browserify asset', ->
         }
         server = app.listen 7076, ->
             easyrequest 'http://localhost:7076/app.js', (error, response, body) ->
-                response.headers['content-type'].should.equal 'text/javascript'
+                response.headers['content-type'].should.equal 'text/javascript; charset=utf-8'
                 done()
 
     it 'should work compressed', (done) ->
@@ -32,7 +32,7 @@ describe 'a browserify asset', ->
             compress: true
         server = app.listen 7076, ->
             easyrequest 'http://localhost:7076/app.js', (error, response, body) ->
-                response.headers['content-type'].should.equal 'text/javascript'
+                response.headers['content-type'].should.equal 'text/javascript; charset=utf-8'
                 done()
 
     #it 'should work with extension handlers', (done) ->

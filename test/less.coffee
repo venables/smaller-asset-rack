@@ -20,7 +20,7 @@ describe 'a less asset', ->
             url: '/style.css'
         server = app.listen 7076, ->
             easyrequest 'http://localhost:7076/style.css', (error, response, body) ->
-                response.headers['content-type'].should.equal 'text/css'
+                response.headers['content-type'].should.equal 'text/css; charset=utf-8'
                 body.should.equal compiled
                 done()
 
@@ -33,7 +33,7 @@ describe 'a less asset', ->
             compress: true
         server = app.listen 7076, ->
             easyrequest 'http://localhost:7076/style.css', (error, response, body) ->
-                response.headers['content-type'].should.equal 'text/css'
+                response.headers['content-type'].should.equal 'text/css; charset=utf-8'
                 body.should.equal compiled.replace(/\n*$/, '')
                 done()
 
@@ -46,7 +46,7 @@ describe 'a less asset', ->
             paths: ["#{__dirname}/fixtures/less/more"]
         server = app.listen 7076, ->
             easyrequest 'http://localhost:7076/style.css', (error, response, body) ->
-                response.headers['content-type'].should.equal 'text/css'
+                response.headers['content-type'].should.equal 'text/css; charset=utf-8'
                 body.should.equal compiled
                 done()
 
