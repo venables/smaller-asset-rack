@@ -3,7 +3,6 @@
 
 # Pull in our dependencies
 async = require 'async'
-pkgcloud = require 'pkgcloud'
 fs = require 'fs'
 pathutil = require 'path'
 {BufferStream, extend} = require('./util')
@@ -109,48 +108,6 @@ class exports.Rack extends EventEmitter
         for asset in @assets
             config[asset.url] = asset.specificUrl
         fs.writeFileSync filename, JSON.stringify(config)
-
-    # Deploy assets to a CDN
-    deploy: (options, next) ->
-        options.keyId = options.accessKey
-        options.key = options.secretKey
-        deploy = =>
-            client = pkgcloud.storage.createClient options
-            assets = @assets
-            # Big time hack for rackspace, first asset doesn't upload, very strange.
-            # Might be bug with pkgcloud.  This hack just uploads the first file again
-            # at the end.
-            assets = @assets.concat @assets[0] if options.provider is 'rackspace'
-            async.forEachSeries assets, (asset, next) =>
-                stream = null
-                headers = {}
-                if asset.gzip
-                    stream = new BufferStream asset.gzipContents
-                    headers['content-encoding'] = 'gzip'
-                else
-                    stream = new BufferStream asset.contents
-                url = asset.specificUrl.slice 1, asset.specificUrl.length
-                for key, value of asset.headers
-                    headers[key] = value
-                headers['x-amz-acl'] = 'public-read' if options.provider is 'amazon'
-                clientOptions =
-                    container: options.container
-                    remote: url
-                    headers: headers
-                    stream: stream
-                client.upload clientOptions, (error) ->
-                    return next error if error?
-                    next()
-            , (error) =>
-                if error?
-                    return next error if next?
-                    throw error
-                if options.configFile?
-                    @writeConfigFile options.configFile
-                next() if next?
-        if @completed
-            deploy()
-        else @on 'complete', deploy
 
     # Creates an HTML tag for a given asset
     tag: (url) ->
