@@ -19,7 +19,7 @@ describe 'an asset', ->
             contents: 'asset-rack'
         server = app.listen 7076, ->
             easyrequest 'http://localhost:7076/blank.txt', (error, response, body) ->
-                response.headers['content-type'].should.equal 'text/plain'
+                response.headers['content-type'].should.equal 'text/plain; charset=utf-8'
                 should.not.exist response.headers['cache-control']
                 body.should.equal 'asset-rack'
                 done()
@@ -30,7 +30,7 @@ describe 'an asset', ->
             contents: 'asset-rack'
         server = app.listen 7076, ->
             easyrequest 'http://localhost:7076/blank-8ac5a0913aa77cb8570e8f2b96e0a1e7.txt', (error, response, body) ->
-                response.headers['content-type'].should.equal 'text/plain'
+                response.headers['content-type'].should.equal 'text/plain; charset=utf-8'
                 response.headers['cache-control'].should.equal 'public, max-age=31536000'
                 body.should.equal 'asset-rack'
                 done()
@@ -44,7 +44,7 @@ describe 'an asset', ->
             async.parallel [
                 (next) ->
                     easyrequest 'http://localhost:7076/blank.txt', (error, response, body) ->
-                        response.headers['content-type'].should.equal 'text/plain'
+                        response.headers['content-type'].should.equal 'text/plain; charset=utf-8'
                         should.not.exist response.headers['cache-control']
                         body.should.equal 'asset-rack'
                         next()
@@ -67,7 +67,7 @@ describe 'an asset', ->
                         next()
                 (next) ->
                     easyrequest 'http://localhost:7076/blank-8ac5a0913aa77cb8570e8f2b96e0a1e7.txt', (error, response, body) ->
-                        response.headers['content-type'].should.equal 'text/plain'
+                        response.headers['content-type'].should.equal 'text/plain; charset=utf-8'
                         response.headers['cache-control'].should.equal 'public, max-age=31536000'
                         body.should.equal 'asset-rack'
                         next()
@@ -83,13 +83,13 @@ describe 'an asset', ->
             async.parallel [
                 (next) ->
                     easyrequest 'http://localhost:7076/blank.txt', (error, response, body) ->
-                        response.headers['content-type'].should.equal 'text/plain'
+                        response.headers['content-type'].should.equal 'text/plain; charset=utf-8'
                         should.not.exist response.headers['cache-control']
                         body.should.equal 'asset-rack'
                         next()
                 (next) ->
                     easyrequest 'http://localhost:7076/blank-8ac5a0913aa77cb8570e8f2b96e0a1e7.txt', (error, response, body) ->
-                        response.headers['content-type'].should.equal 'text/plain'
+                        response.headers['content-type'].should.equal 'text/plain; charset=utf-8'
                         response.headers['cache-control'].should.equal 'public, max-age=3600'
                         body.should.equal 'asset-rack'
                         next()
@@ -105,13 +105,13 @@ describe 'an asset', ->
             async.parallel [
                 (next) ->
                     easyrequest 'http://localhost:7076/blank.txt', (error, response, body) ->
-                        response.headers['content-type'].should.equal 'text/plain'
+                        response.headers['content-type'].should.equal 'text/plain; charset=utf-8'
                         response.headers['cache-control'].should.equal 'public, max-age=3600'
                         body.should.equal 'asset-rack'
                         next()
                 (next) ->
                     easyrequest 'http://localhost:7076/blank-8ac5a0913aa77cb8570e8f2b96e0a1e7.txt', (error, response, body) ->
-                        response.headers['content-type'].should.equal 'text/plain'
+                        response.headers['content-type'].should.equal 'text/plain; charset=utf-8'
                         response.headers['cache-control'].should.equal 'public, max-age=3600'
                         body.should.equal 'asset-rack'
                         next()
