@@ -1,6 +1,6 @@
 {
   "name": "smaller-asset-rack",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A (Smaller) Static Web Framework for Nodejs",
   "author": "Matt Venables <mattvenables@gmail.com>",
   "repository": "https://github.com/venables/smaller-asset-rack",
